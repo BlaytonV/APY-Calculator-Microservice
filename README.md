@@ -79,6 +79,6 @@ response = requests.post(url, json=payload)
 data = response.json()
 print(data)
 ```
-##UML Sequence Diagram
+## UML Sequence Diagram
 ![image](https://github.com/BlaytonV/APY-Calculator-Microservice/assets/129786072/aa0ae3eb-4fc4-491a-9d97-d89fd02b1d77)
 
