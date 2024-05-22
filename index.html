@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APY Calculator</title>
+    <script>
+        async function calculateAPY() {
+            const initialDeposit = document.getElementById('initial_deposit').value;
+            const monthlyDeposit = document.getElementById('monthly_deposit').value;
+            const apy = document.getElementById('apy').value;
+            const timePeriod = document.getElementById('time_period').value;
+
+            const payload = {
+                initial_deposit: initialDeposit,
+                monthly_deposit: monthlyDeposit,
+                apy: apy,
+                time_period: timePeriod
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/calculate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+                } else {
+                    document.getElementById('result').innerText = 'Error: ' + response.statusText;
+                }
+            } catch (error) {
+                document.getElementById('result').innerText = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>APY Calculator</h1>
+    <form onsubmit="event.preventDefault(); calculateAPY();">
+        <label for="initial_deposit">Initial Deposit:</label>
+        <input type="number" id="initial_deposit" name="initial_deposit" required><br><br>
+        <label for="monthly_deposit">Monthly Deposit:</label>
+        <input type="number" id="monthly_deposit" name="monthly_deposit" required><br><br>
+        <label for="apy">APY (%):</label>
+        <input type="number" step="0.01" id="apy" name="apy" required><br><br>
+        <label for="time_period">Time Period (years):</label>
+        <input type="number" id="time_period" name="time_period" required><br><br>
+        <button type="submit">Calculate</button>
+    </form>
+    <h2>Result:</h2>
+    <pre id="result"></pre>
+</body>
+</html>
